@@ -1,22 +1,34 @@
 'use strict';
-const request = require('supertest');
-const app = require('../../src/app');
 
-describe('API post with data', () => {
-  it('should return data with id when asked good cat data', (done) => {
-    let cat = {
-      "name": "fluffy",
-      "age": 9
-    }
-    request(app)
-      .post('/api/v1/cats')
-      .send(cat)
-      .expect(200)
-      .end((req, res) => {
-    
-        console.log(res.body);
-        done();
+require('babel-register');
+const app = require('../../src/app');
+const superagent = require('superagent');
+
+
+describe('API', () => {
+
+  const PORT = 8888;
+  beforeAll( () => {
+    app.start(PORT);
+  });
+  afterAll( () => {
+    app.stop();
+  });
+
+  it('gets a 200 response on a good model', () => {
+    return superagent.get('http://localhost:8888/api/v1/students')
+      .then(response => {
+        expect(response.statusCode).toEqual(200);
+      })
+      .catch(console.err);
+  });
+
+  it('gets a 500 response on an invalid model', () => {
+    return superagent.get('http://localhost:8888/api/v1/foobar')
+      .then(console.log)
+      .catch(response => {
+        expect(response.status).toEqual(500);
       });
-  } );
+  });
 
 });

@@ -19,7 +19,7 @@ router.get('/api/v1/:model', (req, res, next) => {
 });
 
 router.post('/api/v1/:model', (req,res,next) => {
-  let record = new req.odel(req.body);
+  let record = new req.model(req.body);
   record.save()
     .then( data => sendJSON(res,data))
     .catch( next );
@@ -33,8 +33,10 @@ let sendJSON = (res, data) => {
   res.end();
 };
 
-//so this is the proof of life 
+
+//so this code to fetch all at the end and return an error
 router.all('*', (req,res,next) => {
   res.status(404).end();
 });
+
 export default router;
