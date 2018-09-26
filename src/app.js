@@ -22,7 +22,6 @@ app.use(errorHandler);
 
 let server = false;
 
-
 module.exports = {
   start: (port) => {
     if(! server) {
